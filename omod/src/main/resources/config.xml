@@ -88,6 +88,18 @@
 		<defaultValue>false</defaultValue>
 		<description>Allow Connect app to login via Multiple login locations</description>
 	</globalProperty>
+	
+	<globalProperty>
+		<property>bahmniconnect.patientsToSync</property>
+		<defaultValue></defaultValue>
+		<description>List of patient IDs to sync on device for mobile clinic visit</description>
+	</globalProperty>
+	
+	<globalProperty>
+		<property>bahmniconnect.patientIdentifierType</property>
+		<defaultValue></defaultValue>
+		<description>Identifier type to use when filtering patients to sync for mobile clinic visit</description>
+	</globalProperty>
 
 </module>
 
