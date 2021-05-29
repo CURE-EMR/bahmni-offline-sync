@@ -1,5 +1,11 @@
 package org.bahmni.module.bahmniOfflineSync.advice;
 
+import static java.util.Arrays.asList;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.ict4h.atomfeed.server.repository.AllEventRecordsQueue;
@@ -15,13 +21,12 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.atomfeed.transaction.support.AtomFeedSpringTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
-import static java.util.Arrays.asList;
-
 public class EncounterServiceInterceptor  implements MethodInterceptor {
+	
+    private static final String ENCOUNTER_URL = "/openmrs/ws/rest/v1/bahmnicore/bahmniencounter/%s?includeAll=true";
+
+    private final String encounterCategory = "Encounter";
+    
     private static final String LAB_ORDER_RESULTS_URL = "/openmrs/ws/rest/v1/bahmnicore/labOrderResults?patientUuid=%s";
 
     private final String category = "LabOrderResults";
@@ -70,6 +75,29 @@ public class EncounterServiceInterceptor  implements MethodInterceptor {
 
                 events.add(new Event(UUID.randomUUID().toString(), "Lab Order Results", null, url, url, category));
 
+                atomFeedSpringTransactionManager.executeWithTransaction(
+                        new AFTransactionWorkWithoutResult() {
+                            @Override
+                            protected void doInTransaction() {
+                                for (Event event : events) {
+                                    eventService.notify(event);
+                                }
+                            }
+
+                            @Override
+                            public PropagationDefinition getTxPropagationDefinition() {
+                                return PropagationDefinition.PROPAGATION_REQUIRED;
+                            }
+                        }
+                );
+            }
+            
+            if(encounterType != null && ! "LAB_RESULT".equals(encounterType.getName())) {
+            	
+                String url = String.format(ENCOUNTER_URL, encounter.getUuid());
+
+                events.add(new Event(UUID.randomUUID().toString(), "Encounter", null, url, url, encounterCategory));
+                
                 atomFeedSpringTransactionManager.executeWithTransaction(
                         new AFTransactionWorkWithoutResult() {
                             @Override

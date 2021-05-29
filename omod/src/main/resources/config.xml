@@ -37,11 +37,6 @@
 		<class>org.bahmni.module.bahmniOfflineSync.advice.EncounterServiceInterceptor</class>
 	</advice>
 	<advice>
-		<point>org.openmrs.module.cureconnectutils.api.CUREConnectUtilsService</point>
-		<class>org.bahmni.module.bahmniOfflineSync.advice.GeneralEncounterServiceInterceptor
-		</class>
-	</advice>
-	<advice>
 		<point>org.openmrs.api.PatientService</point>
 		<class>org.bahmni.module.bahmniOfflineSync.advice.PatientServiceInterceptor</class>
 	</advice>
