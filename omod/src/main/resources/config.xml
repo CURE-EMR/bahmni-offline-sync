@@ -37,6 +37,11 @@
 		<class>org.bahmni.module.bahmniOfflineSync.advice.EncounterServiceInterceptor</class>
 	</advice>
 	<advice>
+		<point>org.openmrs.module.cureconnectutils.api.CUREConnectUtilsService</point>
+		<class>org.bahmni.module.bahmniOfflineSync.advice.GeneralEncounterServiceInterceptor
+		</class>
+	</advice>
+	<advice>
 		<point>org.openmrs.api.PatientService</point>
 		<class>org.bahmni.module.bahmniOfflineSync.advice.PatientServiceInterceptor</class>
 	</advice>
@@ -90,6 +95,13 @@
 	</globalProperty>
 	
 	<globalProperty>
+		<property>bahmniconnect.offlineFileName</property>
+		<defaultValue></defaultValue>
+		<description>File with patient IDs to sync on device for clinic visit
+		</description>
+	</globalProperty>
+	
+	<globalProperty>
 		<property>bahmniconnect.patientsToSync</property>
 		<defaultValue></defaultValue>
 		<description>List of patient IDs to sync on device for mobile clinic visit</description>
@@ -99,6 +111,12 @@
 		<property>bahmniconnect.patientIdentifierType</property>
 		<defaultValue></defaultValue>
 		<description>Identifier type to use when filtering patients to sync for mobile clinic visit</description>
+	</globalProperty>
+	
+	<globalProperty>
+		<property>bahmniconnect.patientIdentifierPrefix</property>
+		<defaultValue></defaultValue>
+		<description>Identifier prefix to use when filtering patients to sync for mobile clinic visit (e.g.: ET for Ethiopia, CRK for Kenya)</description>
 	</globalProperty>
 
 </module>
