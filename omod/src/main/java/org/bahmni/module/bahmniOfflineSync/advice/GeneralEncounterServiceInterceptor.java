@@ -64,8 +64,8 @@ public class GeneralEncounterServiceInterceptor  implements MethodInterceptor {
         if(operations().contains(invocation.getMethod().getName())) {
             Encounter encounter = (Encounter) arguments[0];
             EncounterType encounterType = encounter.getEncounterType();
-            if(encounterType != null) {
-                Patient patient = encounter.getPatient();
+            if(encounterType != null && ! "LAB_RESULT".equals(encounterType.getName())) {
+            	
                 String url = String.format(ENCOUNTER_URL, encounter.getUuid());
 
                 events.add(new Event(UUID.randomUUID().toString(), "Encounter", null, url, url, category));
